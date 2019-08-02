@@ -17,12 +17,12 @@ public class RequestHandler {
     private final String OPTIONS="OPTIONS";
     private final int SUCCESS = 200;
     private final int BAD_REQUEST = 400;
+    private final int NUM_OF_QUEUED_CONNECTIONS=10;
 
     private HttpServer server;
-
     public RequestHandler() {
         try {
-            server = HttpServer.create(new InetSocketAddress(Config.SERVER_PORT), 0);
+            server = HttpServer.create(new InetSocketAddress(Config.SERVER_PORT), NUM_OF_QUEUED_CONNECTIONS);
             //needs to be put on its own method
             HttpContext context = server.createContext("/");
             context.setHandler(handleRequest());
@@ -51,12 +51,9 @@ public class RequestHandler {
             case "SCHEDULE_MEASUREMENT":
                 System.out.println("Request received: " + request.toString());
                 System.out.println("Scheduling being done now");
-                DatabaseManager.insertMeasurementDetails(reqBody);
-                RequestDriver.getOrcService().returnResponse(request);
+                //DatabaseManager.insertMeasurementDetails(reqBody);
+                Measurement.addMeasurement(request);
                 generateSuccessResponse(httpExchange);
-                break;
-            case "CHECKIN":
-                System.out.println("Checkin");
                 break;
             default:
                 return;
@@ -68,7 +65,8 @@ public class RequestHandler {
             InputStreamReader isr = new InputStreamReader(requestInStream, "utf-8");
             BufferedReader br = new BufferedReader(isr);
             int b;
-            StringBuilder buf = new StringBuilder(512);
+            int bufferCapacity=512;
+            StringBuilder buf = new StringBuilder(bufferCapacity);
             while ((b = br.read()) != -1) {
                 buf.append((char) b);
             }
