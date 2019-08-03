@@ -1,3 +1,5 @@
+
+import com.sun.media.jfxmedia.logging.Logger;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -33,12 +35,13 @@ public class RequestHandler {
 
     public void startServer() {
         server.start();
-        System.out.println("server started");
+        System.out.println("HTTP Server Started");
     }
 
     public void handlePostRequest(HttpExchange httpExchange) {
+        System.out.println("Handling POST Request");
         String reqBody = getBodyString(httpExchange.getRequestBody());
-        System.out.print("Post Request" + reqBody);
+        System.out.print("Post Request\n" + reqBody);
         if (reqBody == null || reqBody.isEmpty()) {
             //generate fail json body
             generateFailedResponse(httpExchange);
@@ -47,11 +50,11 @@ public class RequestHandler {
         //db and orch things happen here
         JSONObject request = new JSONObject(reqBody);
         String type = request.getString("request_type");
+        System.out.println("Type : "+type);
         switch (type) {
             case "SCHEDULE_MEASUREMENT":
-                System.out.println("Request received: " + request.toString());
-                System.out.println("Scheduling being done now");
-                //DatabaseManager.insertMeasurementDetails(reqBody);
+                System.out.println("Job Desc received: " + request.toString());
+                DatabaseManager.insertMeasurementDetails(reqBody);
                 Measurement.addMeasurement(request);
                 generateSuccessResponse(httpExchange);
                 break;
@@ -81,7 +84,12 @@ public class RequestHandler {
 
     public void handleGetRequest(HttpExchange httpExchange) {
         try {
-            Map<String, String> params = queryToMap(httpExchange.getRequestURI().getQuery());
+            String queryParams=httpExchange.getRequestURI().getQuery();
+            if(queryParams==null||queryParams.isEmpty()){
+                generateFailedResponse(httpExchange);
+                return;
+            }
+            Map<String, String> params = queryToMap(queryParams);
             String type = params.get("type");
             String response = DatabaseManager.getMeasurement(type);
             httpExchange.getResponseHeaders().set("Content-Type", "application/json");
@@ -95,7 +103,6 @@ public class RequestHandler {
     }
 
     public Map<String, String> queryToMap(String query) {
-        System.out.println(query);
         Map<String, String> result = new HashMap<>();
         for (String param : query.split("&")) {
             String[] entry = param.split("=");
@@ -110,6 +117,7 @@ public class RequestHandler {
 
     private void handleOPTIONSRequest(HttpExchange httpExchange){
         try {
+            System.out.println("Handling OPTIONS Request");
             httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
             //Vary: Accept-Encoding, Origin
             //Keep-Alive: timeout=2, max=100
@@ -134,7 +142,7 @@ public class RequestHandler {
     private HttpHandler handleRequest() {
         HttpHandler handler = new HttpHandler() {
             public void handle(HttpExchange httpExchange) throws IOException {
-                System.out.println("http method: " + httpExchange.getRequestMethod());
+                System.out.println("HTTP REQUEST Method "+httpExchange.getRequestMethod());
                 if (httpExchange.getRequestMethod().equals(GET)) {
                     handleGetRequest(httpExchange);
                 } else if (httpExchange.getRequestMethod().equals(POST)) {

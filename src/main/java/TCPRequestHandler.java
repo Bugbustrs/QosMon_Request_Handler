@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.*;
 
 public class TCPRequestHandler implements Runnable {
-    private final String MEASUREMENT_CHECK_IN_TYPE = "CHECKIN";
     private Socket clientSocket;
 
     public TCPRequestHandler(Socket clientSocket) {
@@ -24,15 +23,16 @@ public class TCPRequestHandler implements Runnable {
                     jsonString = in.nextLine();
                     JSONObject request = encodeJSON(jsonString);
                     if (request.has("request_type")) {
-                        String requestType = (String) request.get("request_type");
-                        if (requestType.equals(MEASUREMENT_CHECK_IN_TYPE)) {
-                            System.out.println("server receives checkin");
-                            //send the client a list of available jobs;
-                            Measurement.getActiveJobs();
-                        }
+                         JSONArray jobArray=(JSONArray) OrchAPI.returnResponse(request);
+                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+                         out.println(jobArray.toString());
+                         out.flush();
+                        System.out.println("Active Jobs Sent To Phone");
                     } else {
+                        Measurement.recordSuccessfulJob(request);
                         DatabaseManager.writeValues(request);
                     }
+                    return;
                 }
             }
         } catch (Exception e) {

@@ -7,7 +7,7 @@ public class TCPServer implements Runnable {
     public void run() {
         try {
             ServerSocket serverSocket = new ServerSocket(7000);
-            System.out.println("Server Started");
+            System.out.println("TCP SERVER STARTED");
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 Thread handler = new Thread(new TCPRequestHandler(clientSocket));
