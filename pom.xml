@@ -39,10 +39,17 @@
             <artifactId>orchastrator_mobiperf</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.intethi</groupId>
+            <artifactId>pcapanalyzer</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
     <modules>
         <module>../Database_Server/pom.xml</module>
         <module>../orchastrator_mobiperf/pom.xml</module>
+        <module>../pcap_analyzer/pom.xml</module>
     </modules>
 
 </project>
