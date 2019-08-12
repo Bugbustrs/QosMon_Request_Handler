@@ -8,6 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="QosMon" />
         <module name="orchastrator_mobiperf" />
+        <module name="QosMon_Request_Handler" />
+        <module name="pcapanalyzer" />
         <module name="RequestHandler" />
       </profile>
     </annotationProcessing>
