@@ -194,6 +194,7 @@ public class RequestHandler {
         }
         String type = queryParams.get("type");
         //TODO Put DB code related to job Desc
+        String results = DatabaseManager.getMeasurement(type, null);
     }
 
     private void handleJobDescPostRequest(HttpExchange httpExchange) {
@@ -209,6 +210,7 @@ public class RequestHandler {
         String type = queryParams.get("type");
         String jobID = queryParams.get("id");
         //TODO Put DB code related to job Results provided the ID and the type
+        String results = DatabaseManager.getMeasurement(type, jobID);
     }
 
     private void handleJobResultPostRequest(HttpExchange httpExchange) {

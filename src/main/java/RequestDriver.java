@@ -25,8 +25,9 @@ public class RequestDriver {
 
     public static void main(String[] args) {
         RequestHandler rh = new RequestHandler();
+        setup();
         PCAPAnalyzerDriver analyzerDriver = new PCAPAnalyzerDriver(CONFIGS.getJSONObject("file_server_config"));
-        if (setup() && DatabaseManager.init(CONFIGS.getJSONObject("db_configs")) && analyzerDriver.initiate()) {
+        if (DatabaseManager.init(CONFIGS.getJSONObject("db_configs")) && analyzerDriver.initiate()) {
             Measurement.init();
             JobTracker.startJobTracker();
             Thread t = new Thread(new TCPServer());

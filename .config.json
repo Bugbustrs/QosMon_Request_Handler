@@ -11,7 +11,7 @@
     "mongoCollName": "research"
   },
   "file_server_config": {
-    "FILE_SERVER_HOSTNAME": "",
+    "FILE_SERVER_HOSTNAME": "\\\\asustor2.cs.uct.ac.za\\inethi_logs /user:inethiu@asustor2.cs.uct.ac.za",
     "MILLISECONDS_TILL_RETRY_CONNECT": 120000,
     "MINUTES_TILL_ANALYZE_PCAPFILES": 1440,
     "MINUTES_INIT_DELAY": 1,
