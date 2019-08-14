@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Driver;
 
 public class RequestDriver {
     private static JSONObject CONFIGS = null;
