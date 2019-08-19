@@ -195,6 +195,7 @@ public class RequestHandler {
         String type = queryParams.get("type");
         //TODO Put DB code related to job Desc
         String results = DatabaseManager.getMeasurement(type, null);
+        sendPayload(httpExchange,results);
     }
 
     private void handleJobDescPostRequest(HttpExchange httpExchange) {
@@ -211,6 +212,23 @@ public class RequestHandler {
         String jobID = queryParams.get("id");
         //TODO Put DB code related to job Results provided the ID and the type
         String results = DatabaseManager.getMeasurement(type, jobID);
+        sendPayload(httpExchange,results);
+    }
+
+    private void sendPayload(HttpExchange httpExchange, String results) {
+        try {
+            JSONObject successResponse = new JSONObject();
+            successResponse.put("response", "success");
+            successResponse.put("payload",results);
+            String successResponseString = successResponse.toString();
+            httpExchange.getResponseHeaders().set("Content-Type", "application/json");
+            httpExchange.sendResponseHeaders(SUCCESS, successResponseString.getBytes().length);//response code and length
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(successResponseString.getBytes());
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleJobResultPostRequest(HttpExchange httpExchange) {
@@ -270,4 +288,6 @@ public class RequestHandler {
             e.printStackTrace();
         }
     }
+
+
 }
