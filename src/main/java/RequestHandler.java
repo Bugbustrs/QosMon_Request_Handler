@@ -222,6 +222,7 @@ public class RequestHandler {
             successResponse.put("payload",results);
             String successResponseString = successResponse.toString();
             httpExchange.getResponseHeaders().set("Content-Type", "application/json");
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
             httpExchange.sendResponseHeaders(SUCCESS, successResponseString.getBytes().length);//response code and length
             OutputStream os = httpExchange.getResponseBody();
             os.write(successResponseString.getBytes());
@@ -248,6 +249,7 @@ public class RequestHandler {
             httpExchange.getResponseHeaders().set("Vary", "Accept-Encoding, Origin");
             httpExchange.getResponseHeaders().set("Keep-Alive", "timeout=2, max=100");
             httpExchange.getResponseHeaders().set("Connection", "Keep-Alive");
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
             httpExchange.sendResponseHeaders(SUCCESS, 0);
             OutputStream os = httpExchange.getResponseBody();
             os.write("".getBytes());
@@ -265,6 +267,7 @@ public class RequestHandler {
             successResponse.put("response", "success");
             String failedResponseString = successResponse.toString();
             httpExchange.getResponseHeaders().set("Content-Type", "application/json");
+            httpExchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
             httpExchange.sendResponseHeaders(SUCCESS, failedResponseString.getBytes().length);//response code and length
             OutputStream os = httpExchange.getResponseBody();
             os.write(failedResponseString.getBytes());
