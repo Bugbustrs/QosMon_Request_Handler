@@ -33,8 +33,10 @@ public class TCPRequestHandler implements Runnable {
                         }else if(type.equalsIgnoreCase("summary")){
                             DatabaseManager.writePersonalData(jsonString);
                         }
-                    } else {
-                        Measurement.recordSuccessfulJob(request);
+                    } else{
+			 if(request.getBoolean("is_experiment")){ 
+                          	 Measurement.recordSuccessfulJob(request);
+			 }
                         DatabaseManager.writeValues(request);
                     }
                     return;
