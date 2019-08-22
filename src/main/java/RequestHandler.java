@@ -194,7 +194,7 @@ public class RequestHandler {
         }
         String type = queryParams.get("type");
         //TODO Put DB code related to job Desc
-        String results = DatabaseManager.getMeasurement(type, null);
+        String results = DatabaseManager.getMeasurementOfTypes(type);
         sendPayload(httpExchange,results);
     }
 
