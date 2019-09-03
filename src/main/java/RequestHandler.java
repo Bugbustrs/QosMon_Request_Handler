@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +39,9 @@ public class RequestHandler {
 
         HttpContext jobDescContext = server.createContext("/results/jobs");
         jobDescContext.setHandler(handleJobDescRequest());
+
+        HttpContext appUsageContext = server.createContext("/app-usage");
+        appUsageContext.setHandler(handleAppUsageRequest());
     }
 
 
@@ -111,6 +115,24 @@ public class RequestHandler {
                     handleJobResultGetRequest(httpExchange);
                 } else if (httpExchange.getRequestMethod().equals(POST)) {
                     handleJobResultPostRequest(httpExchange);
+                }
+                else if (httpExchange.getRequestMethod().equals(OPTIONS)){
+                    handleOPTIONSRequest(httpExchange);
+                }
+            }
+        };
+        return handler;
+    }
+
+
+    private HttpHandler handleAppUsageRequest() {
+        HttpHandler handler = new HttpHandler() {
+            public void handle(HttpExchange httpExchange) throws IOException {
+                System.out.println("HTTP REQUEST Method "+httpExchange.getRequestMethod());
+                if (httpExchange.getRequestMethod().equals(GET)) {
+                    handleUsageGetRequest(httpExchange);
+                } else if (httpExchange.getRequestMethod().equals(POST)) {
+                    handleUsagePostRequest(httpExchange);
                 }
                 else if (httpExchange.getRequestMethod().equals(OPTIONS)){
                     handleOPTIONSRequest(httpExchange);
@@ -213,6 +235,22 @@ public class RequestHandler {
         //TODO Put DB code related to job Results provided the ID and the type
         String results = DatabaseManager.getMeasurement(type, jobID);
         sendPayload(httpExchange,results);
+    }
+
+    private void handleUsageGetRequest(HttpExchange httpExchange){
+        Map<String,String> queryParams=getQueryParams(httpExchange);
+        if(queryParams.size()==0){
+            generateFailedResponse(httpExchange);
+            return;
+        }
+        String email = queryParams.get("email");
+        System.out.println("email received is "+ email);
+        String results = DatabaseManager.readPersonalData(email,0,new Date().getTime());
+        sendPayload(httpExchange,results);
+    }
+
+    private void handleUsagePostRequest(HttpExchange httpExchange){
+        generateFailedResponse(httpExchange);
     }
 
     private void sendPayload(HttpExchange httpExchange, String results) {
