@@ -1,0 +1,27 @@
+{
+  "db_configs": {
+    "influxDBAdd": "http://localhost:8086",
+    "influxDBName": "mobiperf",
+    "influxDBUser": "root",
+    "influxDBPassword": "root",
+    "mongoDBAdd": "",
+    "mongoDBUser": "",
+    "mongoDBPassword": "",
+    "mongoDBName": "qosmon",
+    "job_data": "job_data",
+    "admin_users": "admin_users",
+    "basic_users": "basic_users",
+    "researchers": "researchers",
+    "personal":"personal",
+    "temp":"temp"
+  
+  },
+  "file_server_config": {
+    "FILE_SERVER_HOSTNAME": "\\\\asustor2.cs.uct.ac.za\\inethi_logs /user:inethiu@asustor2.cs.uct.ac.za",
+    "MILLISECONDS_TILL_RETRY_CONNECT": 120000,
+    "MINUTES_TILL_ANALYZE_PCAPFILES": 1440,
+    "MINUTES_INIT_DELAY": 1,
+    "FILE_MONITOR_DELAY": 5000,
+    "NUM_RETRY_CONNECT": 3
+  }
+}
