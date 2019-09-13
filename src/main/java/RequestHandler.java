@@ -39,7 +39,6 @@ public class RequestHandler {
 
         HttpContext jobDescContext = server.createContext("/results/jobs");
         jobDescContext.setHandler(handleJobDescRequest());
-
         HttpContext appUsageContext = server.createContext("/app-usage");
         appUsageContext.setHandler(handleAppUsageRequest());
     }
@@ -123,8 +122,6 @@ public class RequestHandler {
         };
         return handler;
     }
-
-
     private HttpHandler handleAppUsageRequest() {
         HttpHandler handler = new HttpHandler() {
             public void handle(HttpExchange httpExchange) throws IOException {
@@ -141,7 +138,7 @@ public class RequestHandler {
         };
         return handler;
     }
-
+  
     private HttpHandler handleJobDescRequest() {
         HttpHandler handler = new HttpHandler() {
             public void handle(HttpExchange httpExchange) throws IOException {
@@ -160,26 +157,6 @@ public class RequestHandler {
     }
 
     public void handleScheduleGetRequest(HttpExchange httpExchange) {
-        /*
-        try {
-            String queryParams=httpExchange.getRequestURI().getQuery();
-            if(queryParams==null||queryParams.isEmpty()){
-                generateFailedResponse(httpExchange);
-                return;
-            }
-            Map<String, String> params = queryToMap(queryParams);
-            String type = params.get("type");
-            String response = DatabaseManager.getMeasurement(type);
-            httpExchange.getResponseHeaders().set("Content-Type", "application/json");
-            httpExchange.sendResponseHeaders(SUCCESS, response.toString().getBytes().length);//response code and length
-            OutputStream os = httpExchange.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-        //since here we expect a post so any get is not allowed for this path as of yet
         generateFailedResponse(httpExchange);
     }
 
@@ -237,6 +214,7 @@ public class RequestHandler {
         sendPayload(httpExchange,results);
     }
 
+
     private void handleUsageGetRequest(HttpExchange httpExchange){
         Map<String,String> queryParams=getQueryParams(httpExchange);
         if(queryParams.size()==0){
@@ -252,7 +230,7 @@ public class RequestHandler {
     private void handleUsagePostRequest(HttpExchange httpExchange){
         generateFailedResponse(httpExchange);
     }
-
+  
     private void sendPayload(HttpExchange httpExchange, String results) {
         try {
             JSONObject successResponse = new JSONObject();
