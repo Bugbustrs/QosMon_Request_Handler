@@ -23,15 +23,20 @@ public class TCPRequestHandler implements Runnable {
                     jsonString = in.nextLine();
                     JSONObject request = encodeJSON(jsonString);
                     if (request.has("request_type")) {
-                         JSONArray jobArray=(JSONArray) OrchAPI.returnResponse(request);
-                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
-                         out.println(jobArray.toString());
-                         out.flush();
-                        System.out.println("Active Jobs Sent To Phone");
-                    } else {
-                        if(request.getBoolean("is_experiment")){
-                            Measurement.recordSuccessfulJob(request);
+                        String type =request.getString("request_type");
+                        if(type.equalsIgnoreCase("checkin")) {
+                            JSONArray jobArray = (JSONArray) OrchAPI.returnResponse(request);
+                            PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+                            out.println(jobArray.toString());
+                            out.flush();
+                            System.out.println("Active Jobs Sent To Phone");
+                        }else if(type.equalsIgnoreCase("summary")){
+                            DatabaseManager.writePersonalData(jsonString);
                         }
+                    } else{
+			 if(request.getBoolean("is_experiment")){ 
+                          	 Measurement.recordSuccessfulJob(request);
+			 }
                         DatabaseManager.writeValues(request);
                     }
                     return;
