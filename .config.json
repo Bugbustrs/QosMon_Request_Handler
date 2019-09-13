@@ -11,7 +11,9 @@
     "job_data": "job_data",
     "admin_users": "admin_users",
     "basic_users": "basic_users",
-    "researchers": "researchers"
+    "researchers": "researchers",
+    "personal": "personal",
+    "temp": "temp"
   },
   "file_server_config": {
     "FILE_SERVER_HOSTNAME": "\\\\asustor2.cs.uct.ac.za\\inethi_logs /user:inethiu@asustor2.cs.uct.ac.za",

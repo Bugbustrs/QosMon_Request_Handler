@@ -29,7 +29,9 @@ public class TCPRequestHandler implements Runnable {
                          out.flush();
                         System.out.println("Active Jobs Sent To Phone");
                     } else {
-                        Measurement.recordSuccessfulJob(request);
+                        if(request.getBoolean("is_experiment")){
+                            Measurement.recordSuccessfulJob(request);
+                        }
                         DatabaseManager.writeValues(request);
                     }
                     return;
