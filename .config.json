@@ -16,7 +16,7 @@
     "temp": "temp"
   },
   "file_server_config": {
-    "FILE_SERVER_HOSTNAME": "\\\\asustor2.cs.uct.ac.za\\inethi_logs /user:inethiu@asustor2.cs.uct.ac.za",
+    "FILE_SERVER_HOSTNAME": "",
     "MILLISECONDS_TILL_RETRY_CONNECT": 120000,
     "MINUTES_TILL_ANALYZE_PCAPFILES": 1440,
     "MINUTES_INIT_DELAY": 1,
